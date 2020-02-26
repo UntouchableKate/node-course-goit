@@ -1,11 +1,14 @@
 const express = require('express');
 const morgan = require('morgan');
-var cors = require('cors');
+const cors = require('cors');
+const connectionDB = require('./db/connectionDB');
 
 const contactsRoutes = require('./contacts/contactsRoutes');
 
 const app = express();
 const port = process.env.PORT || 3000;
+
+connectionDB();
 
 app.use(morgan('dev'));
 app.use(cors());
