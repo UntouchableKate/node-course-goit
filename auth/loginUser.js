@@ -6,14 +6,13 @@ const loginUser = async (req, res) => {
     const password = req.body.password;
 
     const user = await Users.findOne({ email: email });
-    console.log();
     if (user) {
       const passwordCompare = user.validatePassword(password);
-      //   user.getJWT ();
+      user.getJWT();
+      const ResponseBody = user.getPublicFields();
       passwordCompare
-        ? rex.status(200).json({ user: user.getPublicFields() })
-        : res.status(404).json({ message: 'Email or password not correct' });
-      // res.redirect('/current', 301)
+        ? res.status(200).json({ ResponseBody })
+        : res.status(400).json({ message: 'Email or password not correct' });
     } else {
       res.status(404).json({ message: 'Some fields are missing' });
     }

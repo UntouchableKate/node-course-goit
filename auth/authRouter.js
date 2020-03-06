@@ -1,14 +1,16 @@
-const express = require ('express');
-const router = express.Router ();
+const express = require('express');
+const router = express.Router();
 
-const registerUser = require ('./registerUser');
-const loginUser = require ('./loginUser');
-// const {logoutUser} = require ('./auth/logoutUser');
-// const {getCurrentUser} = require ('./auth/currentUser');
+const registerUser = require('./registerUser');
+const loginUser = require('./loginUser');
+const logoutUser = require('./logoutUser');
+const getCurrentUser = require('./currentUser');
 
-router.post ('/register', registerUser);
-router.post ('/login', loginUser);
-// router.post ('/logout', logoutUser);
-// router.get ('./current', getCurrentUser);
+const checkToken = require('../middleware/checkToken');
+
+router.post('/register', registerUser);
+router.post('/login', loginUser);
+router.post('/logout', checkToken, logoutUser);
+router.get('/current', checkToken, getCurrentUser);
 
 module.exports = router;

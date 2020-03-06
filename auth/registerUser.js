@@ -1,4 +1,5 @@
 const Users = require('../users/users.model');
+const login = require('./loginUser');
 
 const registerUser = async (req, res, next) => {
   try {
@@ -8,13 +9,11 @@ const registerUser = async (req, res, next) => {
 
     if (password && email) {
       const user = await new Users(body);
-      // user.getJWT ();
+
       const result = await user.save();
 
-      // const ResponseBody = result.getPublicFields();
       if (result) {
-        // res.redirect('./current', 301);
-        res.status(201).json({ user: result });
+        login(req, res);
       }
     } else if (!password || !email) {
       res.status(422).json({ message: 'Missing required fields' });
