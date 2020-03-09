@@ -1,13 +1,13 @@
-const Contact = require('../model/contact');
+const Users = require ('./users.model');
 
 const listContacts = async (req, res) => {
   try {
-    const contacts = await Contact.find();
-    res.status(200).json({
+    const contacts = await Users.find ();
+    res.status (200).json ({
       contacts,
     });
   } catch (error) {
-    res.status(400).json({
+    res.status (400).json ({
       error: error,
     });
   }
@@ -16,43 +16,43 @@ const listContacts = async (req, res) => {
 const getById = (req, res) => {
   const contactId = req.params.contactId;
 
-  Contact.findById(contactId)
-    .then(contact => {
+  Contact.findById (contactId)
+    .then (contact => {
       if (!contact) {
-        return res.status(404).json({
+        return res.status (404).json ({
           contact: contact,
           message: 'Not found',
         });
       }
-      res.status(200).json({
+      res.status (200).json ({
         contact: contact,
       });
     })
-    .catch(error =>
-      res.status(400).json({
+    .catch (error =>
+      res.status (400).json ({
         error: error,
-      }),
+      })
     );
 };
 
 const addContact = async (req, res) => {
   try {
-    const { name, email, phone } = req.body;
+    const {name, email, phone} = req.body;
 
     if (!name || !email || !phone) {
-      return res.status(400).json({
+      return res.status (400).json ({
         message: 'missing required name field',
       });
     }
 
-    const newContact = new Contact({ name, email, phone });
+    const newContact = new Users ({name, email, phone});
 
-    const readyNewContact = await newContact.save();
-    res.status(201).json({
+    const readyNewContact = await newContact.save ();
+    res.status (201).json ({
       contact: readyNewContact,
     });
   } catch (error) {
-    res.status(400).json({
+    res.status (400).json ({
       error: error,
     });
   }
@@ -61,44 +61,44 @@ const addContact = async (req, res) => {
 const removeContact = (req, res) => {
   const contactId = req.params.contactId;
 
-  Contact.findByIdAndDelete(contactId).then(contact => {
+  Contact.findByIdAndDelete (contactId).then (contact => {
     if (!contact) {
-      return res.status(404).json({
+      return res.status (404).json ({
         contact: contact,
         message: 'Not found',
       });
     }
 
     res
-      .status(200)
-      .json({
+      .status (200)
+      .json ({
         message: 'Contact success deleted',
       })
-      .catch(error => res.status(400).json({ error: error }));
+      .catch (error => res.status (400).json ({error: error}));
   });
 };
 
 const updateContact = (req, res) => {
   const contactId = req.params.contactId;
-  const { name, email, phone } = req.body;
+  const {name, email, phone} = req.body;
 
-  Contact.findByIdAndUpdate(
+  Contact.findByIdAndUpdate (
     contactId,
     {
       name,
       email,
       phone,
     },
-    { new: true },
+    {new: true}
   )
-    .then(contact => {
+    .then (contact => {
       if (!contact) {
-        return res.status(404).json({ contact: contact });
+        return res.status (404).json ({contact: contact});
       }
-      res.json({ contact: contact });
+      res.json ({contact: contact});
     })
-    .catch(error => {
-      res.status(400).json({
+    .catch (error => {
+      res.status (400).json ({
         error: error,
       });
     });
